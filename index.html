@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>المحفظة العقارية الشخصية</title>
+    <style>
+        /* إعدادات الألوان المتوافقة مع شاشات OLED لأجهزة iPhone */
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: #151f32;
+            --text-color: #f3f4f6;
+            --text-muted: #9ca3af;
+            --primary: #3b82f6;
+            --accent: #10b981;
+            --border-color: #24324d;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding-bottom: 40px;
+        }
+
+        /* الهيدر والعنوان الرئيسي */
+        header {
+            text-align: center;
+            padding: 35px 20px 20px 20px;
+            background: linear-gradient(180deg, #111827 0%, var(--bg-color) 100%);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* أزرار التنقل (Tabs) مثبتة وسلسة وتدعم التمرير الأفقي للأجهزة الذكية */
+        nav {
+            display: flex;
+            justify-content: flex-start;
+            gap: 8px;
+            padding: 12px 16px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background-color: rgba(11, 15, 25, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab-btn {
+            background-color: var(--card-bg);
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+            padding: 10px 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .tab-btn.active {
+            background-color: var(--primary);
+            color: #ffffff;
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        /* الحاوية الرئيسية للأقسام */
+        main {
+            max-width: 550px;
+            margin: 15px auto;
+            padding: 0 16px;
+        }
+
+        .property-section {
+            display: none;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .property-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* كروت البيانات المالية والمستندات */
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .card h2 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #ffffff;
+            border-right: 4px solid var(--primary);
+            padding-right: 8px;
+        }
+
+        .financial-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .fin-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px;
+            background-color: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .fin-item .label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .fin-item .value {
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        .value.total { color: #ffffff; }
+        .value.paid { color: var(--accent); }
+        .value.remaining { color: #f59e0b; }
+
+        /* أزرار استعراض المستندات والملفات */
+        .doc-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .doc-btn {
+            background-color: rgba(255, 255, 255, 0.04);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            padding: 14px;
+            border-radius: 12px;
+            text-align: right;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+        }
+
+        .doc-btn:active {
+            background-color: rgba(255, 255, 255, 0.12);
+        }
+
+        .doc-btn::after {
+            content: "←";
+            font-weight: bold;
+            color: var(--primary);
+            transition: transform 0.2s;
+        }
+
+        .doc-btn.open::after {
+            transform: rotate(-90deg);
+        }
+
+        /* مشغل الـ PDF المدمج والسلس المتوافق مع شاشات الأيفون */
+        .pdf-container {
+            margin-top: 12px;
+            display: none;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            background-color: #2e394d;
+        }
+
+        .pdf-container.active {
+            display: block;
+        }
+
+        .pdf-wrapper {
+            position: relative;
+            padding-top: 145%; /* أبعاد مناسبة للتصفح الطولي */
+            width: 100%;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .pdf-wrapper object, .pdf-wrapper embed {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>المحفظة العقارية الشخصية</h1>
+        <p>متابعة تفاعلية وسلسة للمستندات والالتزامات المالية</p>
+    </header>
+
+    <!-- قائمة التنقل السريع التفاعلية -->
+    <nav>
+        <button class="tab-btn active" onclick="switchTab('shouqiah')">الشوقية</button>
+        <button class="tab-btn" onclick="switchTab('masar')">وجهة مسار</button>
+        <button class="tab-btn" onclick="switchTab('amwaj')">الأمواج أبحر</button>
+        <button class="tab-btn" onclick="switchTab('balahah')">الباحة التلال</button>
+        <button class="tab-btn" onclick="switchTab('safwa')">الصفوة جدة</button>
+        <button class="tab-btn" onclick="switchTab('masyaf')">المصيف الرياض</button>
+        <button class="tab-btn" onclick="switchTab('huda')">هدى الشام</button>
+        <button class="tab-btn" onclick="switchTab('majaridah')">عقار المجاردة</button>
+    </nav>
+
+    <main>
+        <!-- 1- عقار الشوقية مكة -->
+        <section id="shouqiah" class="property-section active">
+            <div class="card">
+                <h2>عقار الشوقية - مكة المكرمة</h2>
+                <div class="financial-grid">
+                    <div class="fin-item">
+                        <span class="label">قيمة العقار</span>
+                        <span class="value total">1,200,000 ر.س</span>
+                    </div>
+                    <div class="fin-item">
+                        <span class="label">الدفعات المدفوعة</span>
+                        <span class="value paid">800,000 ر.س</span>
+                    </div>
+                    <div class="fin-item">
+                        <span class="label">المتبقي</span>
+                        <span class="value remaining">400,000 ر.س</span>
+                    </div>
+                </div>
+                
+                <div class="doc-menu">
+                    <button class="doc-btn" onclick="loadPdf(this, 'pdf-shouqiah-sak', 'pdfs/shouqiah_sak.pdf')">استعراض صك العقار</button>
+                </div>
+                <div id="pdf-shouqiah-sak" class="pdf-container"><div class="pdf-wrapper"></div></div>
+            </div>
+        </section>
+
+        <!-- 2- عقار وجهة مسار -->
+        <section id="masar" class="property-section">
+            <div class="card">
+                <h2>عقار وجهة مسار</h2>
+                <div class="financial-grid">
+                    <div class="fin-item">
+                        <span class="label">قيمة العقار</span>
+                        <span class="value total">2,500,000 ر.س</span>
+                    </div>
+                    <div class="fin-item">
+                        <span class="label">الدفعات المدفوعة</span>
+                        <span class="value paid">1,500,000 ر.س</span>
+                    </div>
+                    <div class="fin-item">
+                        <span class="label">المتبقي</span>
+                        <span class="value remaining">1,000,000 ر.س</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3- عقار الأمواج أبحر -->
+        <section id="amwaj" class="property-section">
+            <div class="card">
+                <h2>عقار الأمواج - أبحر</h2>
+                <div class="doc-menu">
+                    <button class="doc-btn" onclick="loadPdf(this, 'pdf-amwaj-sak', 'pdfs/amwaj_sak.pdf')">عرض الصك الشرعي</button>
+                    <button class="doc-btn" onclick="loadPdf(this, 'pdf-amwaj-report', 'pdfs/amwaj_report.pdf')">عرض التقرير المساحي</button>
+                    <button class="doc-btn" onclick="loadPdf(this, 'pdf-amwaj-maps', 'pdfs/amwaj_maps.pdf')">عرض المخططات الهندسية</button>
+                </div>
+
+                <div id="pdf-amwaj-sak" class="pdf-container"><div class="pdf-wrapper"></div></div>
+                <div id="pdf-amwaj-report" class="pdf-container"><div class="pdf-wrapper"></div></div>
+                <div id="pdf-amwaj-maps" class="pdf-container"><div class="pdf-wrapper"></div></div>
+            </div>
+        </section>
+
+        <!-- 4- عقار الباحة التلال -->
+        <section id="balahah" class="property-section">
+            <div class="card">
+                <h2>عقار الباحة - التلال</h2>
+                <div class="doc-menu">
+                    <button class="doc-btn" onclick="loadPdf(this, 'pdf-balahah-sak', 'pdfs/balahah_sak.pdf')">عرض صك العقار</button>
+                </div>
+                <div id="pdf-balahah-sak" class="pdf-container"><div class="pdf-wrapper"></div></div>
+            </div>
+        </section>
+
+        <!-- 5- عقار الصفوة جدة -->
+        <section id="safwa" class="property-section">
+            <div class="card">
+                <h2>عقار الصفوة - جدة</h2>
+                <div class="doc-menu">
+                    <button class="doc-btn" onclick="loadPdf(this, 'pdf-safwa-sak', 'pdfs/safwa_sak.pdf')">عرض صك العقار</button>
+                </div>
+                <div id="pdf-safwa-sak" class="pdf-container"><div class="pdf-wrapper"></div></div>
+            </div>
+        </section>
+
+        <!-- 6- عقار المصيف الرياض -->
+        <section id="masyaf" class="property-section">
+            <div class="card">
+                <h2>عقار المصيف - الرياض</h2>
+                <div class="doc-menu">
+                    <button class="doc-btn" onclick="loadPdf(this, 'pdf-masyaf-sak', 'pdfs/masyaf_sak.pdf')">عرض صك العقار</button>
+                </div>
+                <div id="pdf-masyaf-sak" class="pdf-container"><div class="pdf-wrapper"></div></div>
+            </div>
+        </section>
+
+        <!-- 7- عقار هدى الشام -->
+        <section id="huda" class="property-section">
+            <div class="card">
+                <h2>عقار هدى الشام</h2>
+                <div class="doc-menu">
+                    <button class="doc-btn" onclick="loadPdf(this, 'pdf-huda-sak', 'pdfs/huda_sak.pdf')">عرض صك العقار</button>
+                </div>
+                <div id="pdf-huda-sak" class="pdf-container"><div class="pdf-wrapper"></div></div>
+            </div>
+        </section>
+
+        <!-- 8- عقار المجاردة (الجديد بمرفقين) -->
+        <section id="majaridah" class="property-section">
+            <div class="card">
+                <h2>عقار المجاردة</h2>
+                <div class="doc-menu">
+                    <button class="doc-btn" onclick="loadPdf(this, 'pdf-majaridah-sak', 'pdfs/majaridah_sak.pdf')">عرض صك الملكية</button>
+                    <button class="doc-btn" onclick="loadPdf(this, 'pdf-majaridah-well', 'pdfs/majaridah_well.pdf')">عرض رخصة حفر بئر</button>
+                </div>
+
+                <div id="pdf-majaridah-sak" class="pdf-container"><div class="pdf-wrapper"></div></div>
+                <div id="pdf-majaridah-well" class="pdf-container"><div class="pdf-wrapper"></div></div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        function switchTab(sectionId) {
+            document.querySelectorAll('.property-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            document.getElementById(sectionId).classList.add('active');
+            event.currentTarget.classList.add('active');
+
+            // تفريغ الذاكرة فوراً وإغلاق المستندات بالأقسام الأخرى لسرعة الآيفون
+            document.querySelectorAll('.pdf-container').forEach(container => {
+                container.classList.remove('active');
+                container.querySelector('.pdf-wrapper').innerHTML = ''; 
+            });
+            document.querySelectorAll('.doc-btn').forEach(btn => {
+                btn.classList.remove('open');
+            });
+        }
+
+        function loadPdf(buttonElement, containerId, pdfUrl) {
+            const container = document.getElementById(containerId);
+            const wrapper = container.querySelector('.pdf-wrapper');
+
+            if (container.classList.contains('active')) {
+                container.classList.remove('active');
+                buttonElement.classList.remove('open');
+                wrapper.innerHTML = ''; 
+                return;
+            }
+
+            container.parentElement.querySelectorAll('.pdf-container').forEach(c => {
+                c.classList.remove('active');
+                c.querySelector('.pdf-wrapper').innerHTML = '';
+            });
+            container.parentElement.querySelectorAll('.doc-btn').forEach(b => {
+                b.classList.remove('open');
+            });
+
+            // عرض ديناميكي ذكي محلي بالكامل
+            wrapper.innerHTML = `<object data="${pdfUrl}" type="application/pdf" width="100%" height="100%"><embed src="${pdfUrl}" type="application/pdf" /></object>`;
+            
+            container.classList.add('active');
+            buttonElement.classList.add('open');
+        }
+    </script>
+</body>
+</html>
