@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>المحفظة العقارية </title>
+    <title>المحفظة العقارية</title>
     <style>
         /* إعدادات الألوان للوضع الفاتح والنظيف (Light Mode) */
         :root {
@@ -171,7 +171,7 @@
         .value.paid { color: var(--accent); }
         .value.remaining { color: #d97706; }
 
-        /* قائمة التبويبات المنسدلة الخاصة بالدفعات (Accordion) */
+        /* قائمة التبويبات المنسدلة الخاصة بالدفعات */
         .payments-list {
             display: flex;
             flex-direction: column;
@@ -353,23 +353,22 @@
 <body>
 
     <header>
-        <h1>المحفظة العقارية </h1>
+        <h1>المحفظة العقارية</h1>
         <p>متابعة تفاعلية للأصول ومستنداتها والدفعات المالية</p>
     </header>
 
     <nav>
-        <button class="tab-btn active" onclick="switchTab('shouqiah')">الشوقية</button>
-        <button class="tab-btn" onclick="switchTab('masar')">وجهة مسار</button>
-        <button class="tab-btn" onclick="switchTab('amwaj')">الأمواج أبحر</button>
-        <button class="tab-btn" onclick="switchTab('balahah')">الباحة التلال</button>
-        <button class="tab-btn" onclick="switchTab('safwa')">الصفوة جدة</button>
-        <button class="tab-btn" onclick="switchTab('masyaf')">المصيف الرياض</button>
-        <button class="tab-btn" onclick="switchTab('huda')">هدى الشام</button>
-        <button class="tab-btn" onclick="switchTab('majaridah')"> المجاردة</button>
+        <button class="tab-btn active" onclick="switchTab(event, 'shouqiah')">الشوقية</button>
+        <button class="tab-btn" onclick="switchTab(event, 'masar')">وجهة مسار</button>
+        <button class="tab-btn" onclick="switchTab(event, 'amwaj')">الأمواج أبحر</button>
+        <button class="tab-btn" onclick="switchTab(event, 'balahah')">الباحة التلال</button>
+        <button class="tab-btn" onclick="switchTab(event, 'safwa')">الصفوة جدة</button>
+        <button class="tab-btn" onclick="switchTab(event, 'masyaf')">المصيف الرياض</button>
+        <button class="tab-btn" onclick="switchTab(event, 'huda')">هدى الشام</button>
+        <button class="tab-btn" onclick="switchTab(event, 'majaridah')">المجاردة</button>
     </nav>
 
     <main>
-        <!-- 1- عقار الشوقية مكة -->
         <section id="shouqiah" class="property-section active">
             <div class="card">
                 <h2>عقار الشوقية - مكة المكرمة</h2>
@@ -390,17 +389,15 @@
 
                 <h3>سجل الدفعات المدفوعة:</h3>
                 <div class="payments-list">
-                    <!-- الدفعة الأولى -->
                     <div class="payment-row">
                         <div class="payment-header" onclick="togglePayment(this)">الدفعة الأولى</div>
                         <div class="payment-details">
                             <div class="detail-item"><span class="label">مبلغ الدفعة:</span><span class="value">250,000 ر.س</span></div>
                             <div class="detail-item"><span class="label">تاريخ السداد:</span><span class="value">01-01-2026</span></div>
-                            <button class="payment-doc-btn" onclick="loadPdf(this, 'pdf-shouqiah-p1', 'pdfs/shouqiah_p1.pdf')"> إثبات السداد</button>
+                            <button class="payment-doc-btn" onclick="loadPdf(this, 'pdf-shouqiah-p1', 'pdfs/shouqiah_p1.pdf')">إثبات السداد</button>
                             <div id="pdf-shouqiah-p1" class="pdf-container"></div>
                         </div>
                     </div>
-                    <!-- الدفعة الثانية -->
                     <div class="payment-row">
                         <div class="payment-header" onclick="togglePayment(this)">الدفعة الثانية</div>
                         <div class="payment-details">
@@ -420,7 +417,6 @@
             </div>
         </section>
 
-        <!-- 2- عقار وجهة مسار -->
         <section id="masar" class="property-section">
             <div class="card">
                 <h2>عقار وجهة مسار</h2>
@@ -441,7 +437,6 @@
 
                 <h3>سجل الدفعات المدفوعة:</h3>
                 <div class="payments-list">
-                    <!-- الدفعة الأولى -->
                     <div class="payment-row">
                         <div class="payment-header" onclick="togglePayment(this)">الدفعة الأولى</div>
                         <div class="payment-details">
@@ -451,7 +446,6 @@
                             <div id="pdf-masar-p1" class="pdf-container"></div>
                         </div>
                     </div>
-                    <!-- الدفعة الثانية -->
                     <div class="payment-row">
                         <div class="payment-header" onclick="togglePayment(this)">الدفعة الثانية</div>
                         <div class="payment-details">
@@ -461,38 +455,35 @@
                             <div id="pdf-masar-p2" class="pdf-container"></div>
                         </div>
                     </div>                        
-                        <!-- الدفعة الثالثة -->
                     <div class="payment-row">
                         <div class="payment-header" onclick="togglePayment(this)">الدفعة الثالثة</div>
                         <div class="payment-details">
                             <div class="detail-item"><span class="label">مبلغ الدفعة:</span><span class="value">75,000 ر.س</span></div>
                             <div class="detail-item"><span class="label">تاريخ السداد:</span><span class="value">30-05-2026</span></div>
                             <button class="payment-doc-btn" onclick="loadPdf(this, 'pdf-masar-p3', 'pdfs/masar_p3.pdf')">استعراض إثبات السداد</button>
-                            <div id="pdf-masar-p2" class="pdf-container"></div>
+                            <div id="pdf-masar-p3" class="pdf-container"></div>
                         </div>
                     </div>                        
-                        <!-- الدفعة الرابعة -->
                     <div class="payment-row">
                         <div class="payment-header" onclick="togglePayment(this)">الدفعة الرابعة</div>
                         <div class="payment-details">
                             <div class="detail-item"><span class="label">مبلغ الدفعة:</span><span class="value">75,000 ر.س</span></div>
                             <div class="detail-item"><span class="label">تاريخ السداد:</span><span class="value">30-06-2026</span></div>
                             <button class="payment-doc-btn" onclick="loadPdf(this, 'pdf-masar-p4', 'pdfs/masar_p4.pdf')">استعراض إثبات السداد</button>
-                            <div id="pdf-masar-p2" class="pdf-container"></div>
+                            <div id="pdf-masar-p4" class="pdf-container"></div>
                         </div>
                     </div>                        
                 </div>
             </div>
         </section>
 
-        <!-- 3- عقار الأمواج أبحر -->
         <section id="amwaj" class="property-section">
             <div class="card">
                 <h2>عقار الأمواج - أبحر</h2>
                 <div class="doc-menu">
                     <button class="doc-btn" onclick="loadPdf(this, 'pdf-amwaj-sak', 'pdfs/amwaj_sak.pdf')">عرض الصك الشرعي</button>
                     <button class="doc-btn" onclick="loadPdf(this, 'pdf-amwaj-report', 'pdfs/amwaj_report.pdf')">عرض التقرير المساحي</button>
-                    <button class="doc-btn" onclick="loadPdf(this, 'pdf-amwaj-maps', 'pdfs/amwaj_maps.pdf')">عرض المخططات الهندسية</button>
+                    <button class="doc-btn" onclick="loadPdf(this, 'pdf-amwaj-maps', 'pdfs/amwaj_maps.pdf')">عرض Mخططات الهندسية</button>
                 </div>
                 <div id="pdf-amwaj-sak" class="pdf-container"></div>
                 <div id="pdf-amwaj-report" class="pdf-container"></div>
@@ -500,7 +491,6 @@
             </div>
         </section>
 
-        <!-- 4- عقار الباحة التلال -->
         <section id="balahah" class="property-section">
             <div class="card">
                 <h2>عقار الباحة - التلال</h2>
@@ -511,7 +501,6 @@
             </div>
         </section>
 
-        <!-- 5- عقار الصفوة جدة -->
         <section id="safwa" class="property-section">
             <div class="card">
                 <h2>عقار الصفوة - جدة</h2>
@@ -522,7 +511,6 @@
             </div>
         </section>
 
-        <!-- 6- عقار المصيف الرياض -->
         <section id="masyaf" class="property-section">
             <div class="card">
                 <h2>عقار المصيف - الرياض</h2>
@@ -533,7 +521,6 @@
             </div>
         </section>
 
-        <!-- 7- عقار هدى الشام -->
         <section id="huda" class="property-section">
             <div class="card">
                 <h2>عقار هدى الشام</h2>
@@ -544,7 +531,6 @@
             </div>
         </section>
 
-        <!-- 8- عقار المجاردة -->
         <section id="majaridah" class="property-section">
             <div class="card">
                 <h2>عقار المجاردة</h2>
@@ -559,13 +545,11 @@
     </main>
 
     <script>
-        // دالة التحكم بفتح وإغلاق تفاصيل الدفعات
         function togglePayment(headerElement) {
             const row = headerElement.parentElement;
             
             if (row.classList.contains('open')) {
                 row.classList.remove('open');
-                // إغلاق الـ PDF وتفريغه من الذاكرة تلقائياً عند إغلاق الصف
                 row.querySelectorAll('.pdf-container').forEach(c => {
                     c.classList.remove('active');
                     c.innerHTML = '';
@@ -576,7 +560,7 @@
             }
         }
 
-        function switchTab(sectionId) {
+        function switchTab(e, sectionId) {
             document.querySelectorAll('.property-section').forEach(section => {
                 section.classList.remove('active');
             });
@@ -585,9 +569,8 @@
             });
 
             document.getElementById(sectionId).classList.add('active');
-            event.currentTarget.classList.add('active');
+            e.currentTarget.classList.add('active');
 
-            // تفريغ رامات الأيفون عند الانتقال بين التبويبات الرئيسية
             document.querySelectorAll('.pdf-container').forEach(container => {
                 container.classList.remove('active');
                 container.innerHTML = ''; 
@@ -610,7 +593,6 @@
                 return;
             }
 
-            // إغلاق الـ PDFs الأخرى في نفس النطاق لمنع تداخل الشاشات
             container.parentElement.querySelectorAll('.pdf-container').forEach(c => {
                 c.classList.remove('active');
                 c.innerHTML = '';
@@ -619,7 +601,6 @@
                 b.classList.remove('open');
             });
 
-            // توليد العارض مع الأزرار لحفظ وتكبير الملف في الآيفون
             container.innerHTML = `
                 <div class="pdf-toolbar">
                     <a href="${pdfUrl}" target="_blank" class="pdf-action-btn">🔍 ملء الشاشة والتكبير</a>
