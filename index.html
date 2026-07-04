@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>المحفظة العقارية الشخصية</title>
+    <title>المحفظة العقارية </title>
     <style>
-        /* إعدادات الألوان المتوافقة مع شاشات OLED لأجهزة iPhone */
+        /* إعدادات الألوان للوضع الفاتح والنظيف (Light Mode) */
         :root {
-            --bg-color: #0b0f19;
-            --card-bg: #151f32;
-            --text-color: #f3f4f6;
-            --text-muted: #9ca3af;
-            --primary: #3b82f6;
-            --accent: #10b981;
-            --border-color: #24324d;
+            --bg-color: #f4f6f9;
+            --card-bg: #ffffff;
+            --text-color: #1f2937;
+            --text-muted: #4b5563;
+            --primary: #2563eb;
+            --accent: #059669;
+            --border-color: #e5e7eb;
         }
 
         * {
@@ -35,14 +35,14 @@
         header {
             text-align: center;
             padding: 35px 20px 20px 20px;
-            background: linear-gradient(180deg, #111827 0%, var(--bg-color) 100%);
+            background: linear-gradient(180deg, #ffffff 0%, var(--bg-color) 100%);
             border-bottom: 1px solid var(--border-color);
         }
 
         header h1 {
             font-size: 1.5rem;
             font-weight: 700;
-            color: #ffffff;
+            color: #111827;
             margin-bottom: 8px;
         }
 
@@ -51,7 +51,7 @@
             font-size: 0.85rem;
         }
 
-        /* أزرار التنقل (Tabs) مثبتة وسلسة وتدعم التمرير الأفقي للأجهزة الذكية */
+        /* أزرار التنقل (Tabs) */
         nav {
             display: flex;
             justify-content: flex-start;
@@ -60,7 +60,7 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            background-color: rgba(11, 15, 25, 0.85);
+            background-color: rgba(244, 246, 249, 0.85);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border-color);
@@ -85,13 +85,14 @@
             white-space: nowrap;
             transition: all 0.2s ease;
             flex-shrink: 0;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
         }
 
         .tab-btn.active {
             background-color: var(--primary);
             color: #ffffff;
             border-color: var(--primary);
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
         }
 
         /* الحاوية الرئيسية للأقسام */
@@ -115,22 +116,29 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* كروت البيانات المالية والمستندات */
+        /* كروت البيانات */
         .card {
             background-color: var(--card-bg);
             border-radius: 16px;
             padding: 20px;
             margin-bottom: 20px;
             border: 1px solid var(--border-color);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
         }
 
         .card h2 {
             font-size: 1.2rem;
             margin-bottom: 15px;
-            color: #ffffff;
+            color: #111827;
             border-right: 4px solid var(--primary);
             padding-right: 8px;
+        }
+
+        .card h3 {
+            font-size: 0.95rem;
+            margin: 20px 0 10px 0;
+            color: var(--text-muted);
+            font-weight: 600;
         }
 
         .financial-grid {
@@ -144,9 +152,9 @@
             justify-content: space-between;
             align-items: center;
             padding: 14px;
-            background-color: rgba(255, 255, 255, 0.02);
+            background-color: #f9fafb;
             border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-color);
         }
 
         .fin-item .label {
@@ -159,11 +167,84 @@
             font-size: 0.95rem;
         }
 
-        .value.total { color: #ffffff; }
+        .value.total { color: #111827; }
         .value.paid { color: var(--accent); }
-        .value.remaining { color: #f59e0b; }
+        .value.remaining { color: #d97706; }
 
-        /* أزرار استعراض المستندات والملفات */
+        /* قائمة التبويبات المنسدلة الخاصة بالدفعات (Accordion) */
+        .payments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .payment-row {
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            background-color: #f9fafb;
+        }
+
+        .payment-header {
+            padding: 12px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            background-color: #f9fafb;
+            transition: background 0.2s;
+        }
+
+        .payment-header:active {
+            background-color: #f3f4f6;
+        }
+
+        .payment-header::after {
+            content: "▼";
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            transition: transform 0.2s;
+        }
+
+        .payment-row.open .payment-header::after {
+            transform: rotate(-180deg);
+        }
+
+        .payment-details {
+            display: none;
+            padding: 14px;
+            background-color: #ffffff;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.85rem;
+            animation: slideDown 0.2s ease-out;
+        }
+
+        .payment-row.open .payment-details {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed var(--border-color);
+        }
+
+        .detail-item:last-of-type {
+            border-bottom: none;
+            margin-bottom: 12px;
+        }
+
+        /* أزرار المستندات */
         .doc-menu {
             display: flex;
             flex-direction: column;
@@ -171,8 +252,8 @@
             margin-top: 15px;
         }
 
-        .doc-btn {
-            background-color: rgba(255, 255, 255, 0.04);
+        .doc-btn, .payment-doc-btn {
+            background-color: #f9fafb;
             color: var(--text-color);
             border: 1px solid var(--border-color);
             padding: 14px;
@@ -184,40 +265,77 @@
             justify-content: space-between;
             align-items: center;
             transition: background 0.2s;
+            width: 100%;
         }
 
-        .doc-btn:active {
-            background-color: rgba(255, 255, 255, 0.12);
+        .payment-doc-btn {
+            padding: 10px 12px;
+            font-size: 0.8rem;
+            background-color: rgba(37, 99, 235, 0.04);
+            border-color: rgba(37, 99, 235, 0.1);
+            color: var(--primary);
         }
 
-        .doc-btn::after {
+        .doc-btn:active, .payment-doc-btn:active {
+            background-color: #f3f4f6;
+        }
+
+        .doc-btn::after, .payment-doc-btn::after {
             content: "←";
             font-weight: bold;
             color: var(--primary);
             transition: transform 0.2s;
         }
 
-        .doc-btn.open::after {
+        .doc-btn.open::after, .payment-doc-btn.open::after {
             transform: rotate(-90deg);
         }
 
-        /* مشغل الـ PDF المدمج والسلس المتوافق مع شاشات الأيفون */
+        /* مشغل الـ PDF */
         .pdf-container {
             margin-top: 12px;
             display: none;
             border-radius: 14px;
             overflow: hidden;
             border: 1px solid var(--border-color);
-            background-color: #2e394d;
+            background-color: #e5e7eb;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
         }
 
         .pdf-container.active {
             display: block;
         }
 
+        .pdf-toolbar {
+            display: flex;
+            background-color: #e5e7eb;
+            padding: 8px;
+            gap: 8px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .pdf-action-btn {
+            flex: 1;
+            background-color: #ffffff;
+            color: var(--primary);
+            border: 1px solid rgba(0,0,0,0.1);
+            padding: 8px 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border-radius: 8px;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 4px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
         .pdf-wrapper {
             position: relative;
-            padding-top: 145%; /* أبعاد مناسبة للتصفح الطولي */
+            padding-top: 145%;
             width: 100%;
             -webkit-overflow-scrolling: touch;
         }
@@ -235,11 +353,10 @@
 <body>
 
     <header>
-        <h1>المحفظة العقارية الشخصية</h1>
-        <p>متابعة تفاعلية وسلسة للمستندات والالتزامات المالية</p>
+        <h1>المحفظة العقارية </h1>
+        <p>متابعة تفاعلية للأصول ومستنداتها والدفعات المالية</p>
     </header>
 
-    <!-- قائمة التنقل السريع التفاعلية -->
     <nav>
         <button class="tab-btn active" onclick="switchTab('shouqiah')">الشوقية</button>
         <button class="tab-btn" onclick="switchTab('masar')">وجهة مسار</button>
@@ -248,7 +365,7 @@
         <button class="tab-btn" onclick="switchTab('safwa')">الصفوة جدة</button>
         <button class="tab-btn" onclick="switchTab('masyaf')">المصيف الرياض</button>
         <button class="tab-btn" onclick="switchTab('huda')">هدى الشام</button>
-        <button class="tab-btn" onclick="switchTab('majaridah')">عقار المجاردة</button>
+        <button class="tab-btn" onclick="switchTab('majaridah')"> المجاردة</button>
     </nav>
 
     <main>
@@ -259,22 +376,47 @@
                 <div class="financial-grid">
                     <div class="fin-item">
                         <span class="label">قيمة العقار</span>
-                        <span class="value total">1,200,000 ر.س</span>
+                        <span class="value total">1,100,000 ر.س</span>
                     </div>
                     <div class="fin-item">
                         <span class="label">الدفعات المدفوعة</span>
-                        <span class="value paid">800,000 ر.س</span>
+                        <span class="value paid">400,000 ر.س</span>
                     </div>
                     <div class="fin-item">
                         <span class="label">المتبقي</span>
-                        <span class="value remaining">400,000 ر.س</span>
+                        <span class="value remaining">700,000 ر.س</span>
+                    </div>
+                </div>
+
+                <h3>سجل الدفعات المدفوعة:</h3>
+                <div class="payments-list">
+                    <!-- الدفعة الأولى -->
+                    <div class="payment-row">
+                        <div class="payment-header" onclick="togglePayment(this)">الدفعة الأولى</div>
+                        <div class="payment-details">
+                            <div class="detail-item"><span class="label">مبلغ الدفعة:</span><span class="value">250,000 ر.س</span></div>
+                            <div class="detail-item"><span class="label">تاريخ السداد:</span><span class="value">01-01-2026</span></div>
+                            <button class="payment-doc-btn" onclick="loadPdf(this, 'pdf-shouqiah-p1', 'pdfs/shouqiah_p1.pdf')"> إثبات السداد</button>
+                            <div id="pdf-shouqiah-p1" class="pdf-container"></div>
+                        </div>
+                    </div>
+                    <!-- الدفعة الثانية -->
+                    <div class="payment-row">
+                        <div class="payment-header" onclick="togglePayment(this)">الدفعة الثانية</div>
+                        <div class="payment-details">
+                            <div class="detail-item"><span class="label">مبلغ الدفعة:</span><span class="value">50,000 ر.س</span></div>
+                            <div class="detail-item"><span class="label">تاريخ السداد:</span><span class="value">30-04-2026</span></div>
+                            <button class="payment-doc-btn" onclick="loadPdf(this, 'pdf-shouqiah-p2', 'pdfs/shouqiah_p2.pdf')">استعراض إثبات السداد</button>
+                            <div id="pdf-shouqiah-p2" class="pdf-container"></div>
+                        </div>
                     </div>
                 </div>
                 
+                <h3>مستندات العقار الأخرى:</h3>
                 <div class="doc-menu">
                     <button class="doc-btn" onclick="loadPdf(this, 'pdf-shouqiah-sak', 'pdfs/shouqiah_sak.pdf')">استعراض صك العقار</button>
                 </div>
-                <div id="pdf-shouqiah-sak" class="pdf-container"><div class="pdf-wrapper"></div></div>
+                <div id="pdf-shouqiah-sak" class="pdf-container"></div>
             </div>
         </section>
 
@@ -296,6 +438,30 @@
                         <span class="value remaining">1,000,000 ر.س</span>
                     </div>
                 </div>
+
+                <h3>سجل الدفعات المدفوعة:</h3>
+                <div class="payments-list">
+                    <!-- الدفعة الأولى -->
+                    <div class="payment-row">
+                        <div class="payment-header" onclick="togglePayment(this)">الدفعة الأولى</div>
+                        <div class="payment-details">
+                            <div class="detail-item"><span class="label">مبلغ الدفعة:</span><span class="value">1,000,000 ر.س</span></div>
+                            <div class="detail-item"><span class="label">تاريخ السداد:</span><span class="value">10-01-2025</span></div>
+                            <button class="payment-doc-btn" onclick="loadPdf(this, 'pdf-masar-p1', 'pdfs/masar_p1.pdf')">استعراض إثبات السداد</button>
+                            <div id="pdf-masar-p1" class="pdf-container"></div>
+                        </div>
+                    </div>
+                    <!-- الدفعة الثانية -->
+                    <div class="payment-row">
+                        <div class="payment-header" onclick="togglePayment(this)">الدفعة الثانية</div>
+                        <div class="payment-details">
+                            <div class="detail-item"><span class="label">مبلغ الدفعة:</span><span class="value">500,000 ر.س</span></div>
+                            <div class="detail-item"><span class="label">تاريخ السداد:</span><span class="value">05-06-2025</span></div>
+                            <button class="payment-doc-btn" onclick="loadPdf(this, 'pdf-masar-p2', 'pdfs/masar_p2.pdf')">استعراض إثبات السداد</button>
+                            <div id="pdf-masar-p2" class="pdf-container"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -308,10 +474,9 @@
                     <button class="doc-btn" onclick="loadPdf(this, 'pdf-amwaj-report', 'pdfs/amwaj_report.pdf')">عرض التقرير المساحي</button>
                     <button class="doc-btn" onclick="loadPdf(this, 'pdf-amwaj-maps', 'pdfs/amwaj_maps.pdf')">عرض المخططات الهندسية</button>
                 </div>
-
-                <div id="pdf-amwaj-sak" class="pdf-container"><div class="pdf-wrapper"></div></div>
-                <div id="pdf-amwaj-report" class="pdf-container"><div class="pdf-wrapper"></div></div>
-                <div id="pdf-amwaj-maps" class="pdf-container"><div class="pdf-wrapper"></div></div>
+                <div id="pdf-amwaj-sak" class="pdf-container"></div>
+                <div id="pdf-amwaj-report" class="pdf-container"></div>
+                <div id="pdf-amwaj-maps" class="pdf-container"></div>
             </div>
         </section>
 
@@ -322,7 +487,7 @@
                 <div class="doc-menu">
                     <button class="doc-btn" onclick="loadPdf(this, 'pdf-balahah-sak', 'pdfs/balahah_sak.pdf')">عرض صك العقار</button>
                 </div>
-                <div id="pdf-balahah-sak" class="pdf-container"><div class="pdf-wrapper"></div></div>
+                <div id="pdf-balahah-sak" class="pdf-container"></div>
             </div>
         </section>
 
@@ -333,7 +498,7 @@
                 <div class="doc-menu">
                     <button class="doc-btn" onclick="loadPdf(this, 'pdf-safwa-sak', 'pdfs/safwa_sak.pdf')">عرض صك العقار</button>
                 </div>
-                <div id="pdf-safwa-sak" class="pdf-container"><div class="pdf-wrapper"></div></div>
+                <div id="pdf-safwa-sak" class="pdf-container"></div>
             </div>
         </section>
 
@@ -344,7 +509,7 @@
                 <div class="doc-menu">
                     <button class="doc-btn" onclick="loadPdf(this, 'pdf-masyaf-sak', 'pdfs/masyaf_sak.pdf')">عرض صك العقار</button>
                 </div>
-                <div id="pdf-masyaf-sak" class="pdf-container"><div class="pdf-wrapper"></div></div>
+                <div id="pdf-masyaf-sak" class="pdf-container"></div>
             </div>
         </section>
 
@@ -355,11 +520,11 @@
                 <div class="doc-menu">
                     <button class="doc-btn" onclick="loadPdf(this, 'pdf-huda-sak', 'pdfs/huda_sak.pdf')">عرض صك العقار</button>
                 </div>
-                <div id="pdf-huda-sak" class="pdf-container"><div class="pdf-wrapper"></div></div>
+                <div id="pdf-huda-sak" class="pdf-container"></div>
             </div>
         </section>
 
-        <!-- 8- عقار المجاردة (الجديد بمرفقين) -->
+        <!-- 8- عقار المجاردة -->
         <section id="majaridah" class="property-section">
             <div class="card">
                 <h2>عقار المجاردة</h2>
@@ -367,14 +532,30 @@
                     <button class="doc-btn" onclick="loadPdf(this, 'pdf-majaridah-sak', 'pdfs/majaridah_sak.pdf')">عرض صك الملكية</button>
                     <button class="doc-btn" onclick="loadPdf(this, 'pdf-majaridah-well', 'pdfs/majaridah_well.pdf')">عرض رخصة حفر بئر</button>
                 </div>
-
-                <div id="pdf-majaridah-sak" class="pdf-container"><div class="pdf-wrapper"></div></div>
-                <div id="pdf-majaridah-well" class="pdf-container"><div class="pdf-wrapper"></div></div>
+                <div id="pdf-majaridah-sak" class="pdf-container"></div>
+                <div id="pdf-majaridah-well" class="pdf-container"></div>
             </div>
         </section>
     </main>
 
     <script>
+        // دالة التحكم بفتح وإغلاق تفاصيل الدفعات
+        function togglePayment(headerElement) {
+            const row = headerElement.parentElement;
+            
+            if (row.classList.contains('open')) {
+                row.classList.remove('open');
+                // إغلاق الـ PDF وتفريغه من الذاكرة تلقائياً عند إغلاق الصف
+                row.querySelectorAll('.pdf-container').forEach(c => {
+                    c.classList.remove('active');
+                    c.innerHTML = '';
+                });
+                row.querySelectorAll('.payment-doc-btn').forEach(b => b.classList.remove('open'));
+            } else {
+                row.classList.add('open');
+            }
+        }
+
         function switchTab(sectionId) {
             document.querySelectorAll('.property-section').forEach(section => {
                 section.classList.remove('active');
@@ -386,37 +567,50 @@
             document.getElementById(sectionId).classList.add('active');
             event.currentTarget.classList.add('active');
 
-            // تفريغ الذاكرة فوراً وإغلاق المستندات بالأقسام الأخرى لسرعة الآيفون
+            // تفريغ رامات الأيفون عند الانتقال بين التبويبات الرئيسية
             document.querySelectorAll('.pdf-container').forEach(container => {
                 container.classList.remove('active');
-                container.querySelector('.pdf-wrapper').innerHTML = ''; 
+                container.innerHTML = ''; 
             });
-            document.querySelectorAll('.doc-btn').forEach(btn => {
+            document.querySelectorAll('.doc-btn, .payment-doc-btn').forEach(btn => {
                 btn.classList.remove('open');
+            });
+            document.querySelectorAll('.payment-row').forEach(row => {
+                row.classList.remove('open');
             });
         }
 
         function loadPdf(buttonElement, containerId, pdfUrl) {
             const container = document.getElementById(containerId);
-            const wrapper = container.querySelector('.pdf-wrapper');
 
             if (container.classList.contains('active')) {
                 container.classList.remove('active');
                 buttonElement.classList.remove('open');
-                wrapper.innerHTML = ''; 
+                container.innerHTML = ''; 
                 return;
             }
 
+            // إغلاق الـ PDFs الأخرى في نفس النطاق لمنع تداخل الشاشات
             container.parentElement.querySelectorAll('.pdf-container').forEach(c => {
                 c.classList.remove('active');
-                c.querySelector('.pdf-wrapper').innerHTML = '';
+                c.innerHTML = '';
             });
-            container.parentElement.querySelectorAll('.doc-btn').forEach(b => {
+            container.parentElement.querySelectorAll('.doc-btn, .payment-doc-btn').forEach(b => {
                 b.classList.remove('open');
             });
 
-            // عرض ديناميكي ذكي محلي بالكامل
-            wrapper.innerHTML = `<object data="${pdfUrl}" type="application/pdf" width="100%" height="100%"><embed src="${pdfUrl}" type="application/pdf" /></object>`;
+            // توليد العارض مع الأزرار لحفظ وتكبير الملف في الآيفون
+            container.innerHTML = `
+                <div class="pdf-toolbar">
+                    <a href="${pdfUrl}" target="_blank" class="pdf-action-btn">🔍 ملء الشاشة والتكبير</a>
+                    <a href="${pdfUrl}" download class="pdf-action-btn">💾 حفظ المستند</a>
+                </div>
+                <div class="pdf-wrapper">
+                    <object data="${pdfUrl}" type="application/pdf" width="100%" height="100%">
+                        <embed src="${pdfUrl}" type="application/pdf" />
+                    </object>
+                </div>
+            `;
             
             container.classList.add('active');
             buttonElement.classList.add('open');
