@@ -457,14 +457,14 @@
                     </div>
                     <div class="fin-item">
                         <span class="label">الدفعات المدفوعة</span>
-                        <span class="value paid">325,000 ر.س</span>
+                        <span class="value paid">400,000 ر.س</span>
                     </div>
                     <div class="fin-item">
                         <span class="label">المتبقي</span>
-                        <span class="value remaining">1,964,280 ر.س</span>
+                        <span class="value remaining">1,889,280 ر.س</span>
                     </div>
                 </div>
-
+        
                 <h3>سجل الدفعات المدفوعة:</h3>
                 <div class="payments-list">
                     <div class="payment-row">
@@ -476,6 +476,7 @@
                             <div id="pdf-masar-p1" class="pdf-container"></div>
                         </div>
                     </div>
+                    
                     <div class="payment-row">
                         <div class="payment-header" onclick="togglePayment(this)">الدفعة الثانية</div>
                         <div class="payment-details">
@@ -485,6 +486,7 @@
                             <div id="pdf-masar-p2" class="pdf-container"></div>
                         </div>
                     </div>                        
+                    
                     <div class="payment-row">
                         <div class="payment-header" onclick="togglePayment(this)">الدفعة الثالثة</div>
                         <div class="payment-details">
@@ -494,6 +496,7 @@
                             <div id="pdf-masar-p3" class="pdf-container"></div>
                         </div>
                     </div>                        
+                    
                     <div class="payment-row">
                         <div class="payment-header" onclick="togglePayment(this)">الدفعة الرابعة</div>
                         <div class="payment-details">
@@ -503,10 +506,19 @@
                             <div id="pdf-masar-p4" class="pdf-container"></div>
                         </div>
                     </div>                        
+                    
+                    <div class="payment-row">
+                        <div class="payment-header" onclick="togglePayment(this)">الدفعة الخامسة</div>
+                        <div class="payment-details">
+                            <div class="detail-item"><span class="label">مبلغ الدفعة:</span><span class="value">75,000 ر.س</span></div>
+                            <div class="detail-item"><span class="label">تاريخ السداد:</span><span class="value">31-07-2026</span></div>
+                            <button class="payment-doc-btn" onclick="loadPdf(this, 'pdf-masar-p5', 'pdfs/masar_p5.pdf')">استعراض إثبات السداد</button>
+                            <div id="pdf-masar-p5" class="pdf-container"></div>
+                        </div>
+                    </div>                        
                 </div>
             </div>
         </section>
-
         <section id="amwaj" class="property-section">
             <div class="card">
                 <h2>عقار الأمواج - أبحر</h2>
