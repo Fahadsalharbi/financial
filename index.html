@@ -360,6 +360,7 @@
     <nav>
         <button class="tab-btn active" onclick="switchTab(event, 'shouqiah')">الشوقية</button>
         <button class="tab-btn" onclick="switchTab(event, 'masar')">وجهة مسار</button>
+        <button class="tab-btn" onclick="switchTab(event, 'al-hamraa')">بيت الحمراء بمكة</button>
         <button class="tab-btn" onclick="switchTab(event, 'amwaj')">الأمواج أبحر</button>
         <button class="tab-btn" onclick="switchTab(event, 'balahah')">الباحة التلال</button>
         <button class="tab-btn" onclick="switchTab(event, 'safwa')">الصفوة جدة</button>
@@ -561,6 +562,25 @@
                 </div>
             </div>
         </section>
+
+        <section id="al-hamraa" class="property-section">
+            <div class="card">
+                <h2>بيت الحمراء - مكة المكرمة</h2>
+                
+                <h3>قائمة المستندات والملفات:</h3>
+                <div class="doc-menu">
+                    <button class="doc-btn" onclick="loadPdf(this, 'pdf-hamraa-receipt', 'pdfs/hamraa_receipt_unit10.pdf')">سند قبض (قيمة الوحدة السكنية رقم ١٠)</button>
+                    <button class="doc-btn" onclick="loadPdf(this, 'pdf-hamraa-transfer', 'pdfs/hamraa_driver_room_transfer.pdf')">حوالة (قيمة غرفة السائق)</button>
+                    <button class="doc-btn" onclick="loadPdf(this, 'pdf-hamraa-profile', 'pdfs/al_noor_building_profile.pdf')">بروفايل بناية النور</button>
+                </div>
+        
+                <!-- حاويات عرض الـ PDF الخاصة بكل عنصر -->
+                <div id="pdf-hamraa-receipt" class="pdf-container"></div>
+                <div id="pdf-hamraa-transfer" class="pdf-container"></div>
+                <div id="pdf-hamraa-profile" class="pdf-container"></div>
+            </div>
+        </section>
+        
         <section id="amwaj" class="property-section">
             <div class="card">
                 <h2>عقار الأمواج - أبحر</h2>
